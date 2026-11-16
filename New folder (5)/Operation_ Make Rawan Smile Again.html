@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Operation: Make Rawan Smile Again</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ---------- Theme ---------- */
+:root{
+  --ink:#6b4a7a; --pink:#ff8fb8; --pink-soft:#ffd6e7; --lav:#d9c8ff; --cream:#fff7fb;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+html,body{margin:0}
+body{
+  font-family:'Cairo',system-ui,sans-serif; color:var(--ink);
+  background:linear-gradient(180deg,#ffe3ef 0%,#ecdcff 50%,#ffe3ef 100%) fixed;
+  overflow-x:hidden; padding-top:var(--safe-t); padding-bottom:var(--safe-b);
+}
+svg{display:block;image-rendering:pixelated}
+
+/* floating pixel decorations (background) */
+#bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#bg .deco{position:absolute;bottom:-40px;opacity:.55;animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-115vh) rotate(25deg)}}
+
+section{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 18px;text-align:center}
+.fade{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.fade.in{opacity:1;transform:none}
+
+/* pixel-style button */
+.btn{
+  font:700 19px 'Cairo',sans-serif; color:#fff; background:var(--pink);
+  border:4px solid var(--ink); border-radius:8px; padding:10px 26px; cursor:pointer;
+  box-shadow:0 6px 0 var(--ink); transition:transform .1s,box-shadow .1s,filter .2s;
+}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.btn.lav{background:#b79cf5}
+
+/* ---------- 1. Landing ---------- */
+h1{
+  font:400 clamp(16px,5.2vw,30px)/1.6 'Press Start 2P',monospace; color:#ff6fa0; margin:18px 0 12px;
+  text-shadow:3px 3px 0 var(--ink); max-width:640px;
+}
+.sub{font:400 clamp(22px,5vw,28px) 'VT323',monospace; margin:0 0 28px}
+#bunny{width:min(200px,52vw);animation:bob 2s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(107,74,122,.18))}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.bunny-wrap{position:relative}
+.bunny-wrap .sp{position:absolute;animation:twinkle 1.6s ease-in-out infinite}
+@keyframes twinkle{50%{transform:scale(.4);opacity:.3}}
+
+/* ---------- 2. Heart game ---------- */
+h2{font-weight:900;font-size:clamp(26px,7vw,38px);margin:0 0 26px}
+#hearts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.heart{
+  width:clamp(52px,15vw,74px);background:none;border:0;padding:0;cursor:pointer;
+  animation:bob 1.8s ease-in-out infinite; transition:transform .15s;
+}
+.heart:nth-child(2){animation-delay:.25s}.heart:nth-child(3){animation-delay:.5s}
+.heart:nth-child(4){animation-delay:.75s}.heart:nth-child(5){animation-delay:1s}
+.heart:hover{transform:scale(1.15)}
+.heart.gone{animation:pop .5s forwards;pointer-events:none}
+@keyframes pop{40%{transform:scale(1.4)}100%{transform:scale(0);opacity:0}}
+#slots{display:flex;gap:8px;justify-content:center;direction:rtl;margin-bottom:22px;transition:opacity .5s}
+.slot{
+  width:clamp(44px,13vw,60px);height:clamp(56px,16vw,72px);border:4px dashed var(--ink);border-radius:8px;
+  background:rgba(255,255,255,.6);font-weight:900;font-size:clamp(28px,8vw,40px);color:#ff5c93;
+  display:flex;align-items:center;justify-content:center;
+}
+.slot.filled{border-style:solid;background:#fff;animation:letter .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes letter{0%{transform:scale(0) rotate(-30deg)}100%{transform:none}}
+#bar{width:min(300px,80vw);height:22px;border:4px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden}
+#fill{height:100%;width:0;background:repeating-linear-gradient(90deg,#ff8fb8 0 12px,#ffb3d1 12px 16px);transition:width .5s}
+#count{font:400 11px 'Press Start 2P',monospace;margin-top:12px}
+#fullName{
+  display:none;font-weight:900;font-size:clamp(54px,18vw,96px);color:#ff5c93;
+  text-shadow:4px 4px 0 var(--ink);margin:0 0 14px;
+}
+#fullName.show{display:block;animation:letter .8s cubic-bezier(.3,1.6,.5,1)}
+
+/* ---------- 3. Drama question ---------- */
+#dramaQ{font-weight:900;font-size:clamp(24px,6.5vw,34px);margin:0 0 20px;display:block}
+#dramaForm{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:min(440px,100%)}
+#dramaInput{
+  flex:1 1 220px;font:600 18px 'Cairo',sans-serif;padding:10px 14px;color:var(--ink);
+  border:4px solid var(--ink);border-radius:8px;background:#fff;outline:none;min-width:0;
+}
+#dramaInput:focus{box-shadow:0 0 0 4px var(--lav)}
+#dramaInput.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#dramaDone{display:none;align-items:center;gap:10px;margin-top:22px;font-weight:700;font-size:22px}
+#dramaDone.show{display:flex;animation:letter .6s cubic-bezier(.3,1.6,.5,1)}
+
+/* ---------- 4. Envelope + letter ---------- */
+.env-wrap{padding-top:140px}
+#env{
+  position:relative;display:block;width:min(310px,84vw);height:190px;padding:0;cursor:pointer;
+  background:#f59cc0;border:4px solid var(--ink);border-radius:8px;box-shadow:6px 6px 0 var(--ink);
+  animation:bob 2s ease-in-out infinite;
+}
+#env.open{animation:none}
+#env .flap,#env .pocket{position:absolute;left:0;right:0}
+#env .flap{
+  top:0;height:55%;background:#ffa9cb;clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;transition:transform .6s ease,z-index 0s .3s;z-index:4;
+}
+#env .pocket{top:0;bottom:0;background:#ffc6dd;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);z-index:3}
+#env .seal{position:absolute;left:50%;top:55%;width:34px;margin:-17px 0 0 -17px;z-index:5;transition:opacity .3s,transform .3s}
+#env.open .flap{transform:rotateX(180deg);z-index:1}
+#env.open .seal{opacity:0;transform:scale(0)}
+.paper{
+  position:absolute;left:5%;right:5%;top:8px;height:200px;z-index:2;padding:20px 16px;
+  background:#fffaf0 repeating-linear-gradient(0deg,transparent 0 31px,#f1e3ee 31px 33px);
+  border:3px solid var(--ink);border-radius:6px;transition:transform .9s .35s cubic-bezier(.3,1.2,.5,1);
+  display:flex;align-items:flex-start;justify-content:center;
+}
+#env.open .paper{transform:translateY(-135px)}
+.paper p{margin:0;direction:rtl;font-weight:700;font-size:clamp(17px,4.6vw,20px);line-height:33px;color:var(--ink)}
+
+/* ---------- 5. Final buttons ---------- */
+#choices{
+  display:flex;gap:14px;justify-content:center;margin-top:36px;direction:rtl;
+  opacity:0;visibility:hidden;transform:translateY(20px);transition:all .7s;
+}
+#choices.show{opacity:1;visibility:visible;transform:none}
+#noSlot{display:inline-block}
+#noBtn{touch-action:none}
+#noBtn.fixed{position:fixed;z-index:60;margin:0;transition:left .35s cubic-bezier(.3,1.5,.5,1),top .35s cubic-bezier(.3,1.5,.5,1),transform .35s}
+
+/* celebration */
+#party{
+  position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;
+  background:rgba(255,227,239,.82);backdrop-filter:blur(3px);padding:20px;
+}
+#party.show{display:flex;animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0}}
+#party h3{
+  font-weight:900;font-size:clamp(30px,8.5vw,52px);color:#ff5c93;text-shadow:3px 3px 0 var(--ink);
+  margin:0;text-align:center;line-height:1.5;animation:letter .8s cubic-bezier(.3,1.6,.5,1);position:relative;z-index:2
+}
+.fall{position:fixed;bottom:-60px;z-index:65;pointer-events:none;animation:rise2 linear forwards}
+@keyframes rise2{to{transform:translateY(-120vh) rotate(40deg)}}
+.burst{position:fixed;z-index:80;pointer-events:none;animation:burst .7s ease-out forwards}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="bg" aria-hidden="true"></div>
+
+<!-- 1. Landing -->
+<section id="landing">
+  <div class="bunny-wrap" id="bunnyWrap"></div>
+  <h1>Operation: Make Rawan Smile Again</h1>
+  <p class="sub">A special little game for you ♡</p>
+  <button class="btn" id="startBtn">ابدئي اللعب</button>
+</section>
+
+<!-- 2. Heart collection game -->
+<section id="game1" class="fade">
+  <h2>اجمعي حروف اسمك</h2>
+  <div id="hearts"></div>
+  <div id="slots"></div>
+  <div id="fullName">رافان ♡</div>
+  <div id="bar"><div id="fill"></div></div>
+  <div id="count">0 / 5</div>
+</section>
+
+<!-- 3. Korean drama question (no heading) -->
+<section id="drama" class="fade">
+  <label id="dramaQ" for="dramaInput">إيه آخر مسلسل كوري شفتيه؟</label>
+  <form id="dramaForm">
+    <input id="dramaInput" type="text" autocomplete="off" maxlength="80">
+    <button class="btn lav" type="submit">إرسال</button>
+  </form>
+  <div id="dramaDone"><span id="dramaIcon"></span><span>اتسجلت ✨</span></div>
+</section>
+
+<!-- 4 + 5. Envelope letter and final buttons (no heading) -->
+<section id="letter" class="fade">
+  <div class="env-wrap">
+    <button id="env" aria-label="envelope">
+      <div class="paper"><p>حقك عليا يا أحلى حاجة في الدنيا انتي متستاهليش تزعلي عشان أي حاجة مهما كانت ❤️</p></div>
+      <div class="flap"></div>
+      <div class="pocket"></div>
+      <div class="seal" id="seal"></div>
+    </button>
+  </div>
+  <div id="choices">
+    <button class="btn" id="yesBtn">اتصالحت ❤️</button>
+    <span id="noSlot"><button class="btn lav" id="noBtn">لسا زعلانة</button></span>
+  </div>
+</section>
+
+<div id="party"><h3>❤️💖💕💗💞</h3></div>
+
+<script>
+/* ================= Pixel-art helpers ================= */
+// Turns a text grid + palette into a crisp SVG (each char = one pixel).
+function px(grid, pal){
+  let r = '';
+  grid.forEach((row, y) => [...row].forEach((c, x) => {
+    if (pal[c]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[c]}"/>`;
+  }));
+  return `<svg viewBox="0 0 ${grid[0].length} ${grid.length}" shape-rendering="crispEdges" width="100%">${r}</svg>`;
+}
+const HEART = [".hh.hh.","hwhhhhh","hhhhhhh",".hhhhh.","..hhh..","...h..."];
+const SPARK = ["..s..","..s..","sssss","..s..","..s.."];
+const BUNNY = [
+ "...oo......oo...","..owwo....owwo..","..owpo....owpo..","..owpo....owpo..","..owwo....owwo..",
+ "..oowwwwwwwwoo..",".owwwwwwwwwwwwo.",".owwkwwwwwwkwwo.",".owwwwwwwwwwwwo.",".owppwwnnwwppwo.",
+ ".owwwwwwwwwwwwo.","..oowwwwwwwwoo..","..owwwwwwwwwwo..","..owwhhwwhhwwo..","..owwhhhhhhwwo..",
+ "..owwwhhhhwwwo..","...owwwhhwwwo...","...oowwwwwwoo...","....oooooooo...."
+].map(r => r.replace(/h/g,'h')); // 'h' = heart pixels
+const bunnyPal = {o:'#6b4a7a',w:'#ffffff',p:'#ffb3d1',k:'#3a2a4a',n:'#ff7fa8',h:'#ff4d88'};
+const heartPal = c => ({h:c, w:'#ffffff'});
+const sparkPal = c => ({s:c});
+const COLORS = ['#ff5c93','#ff8fb8','#b79cf5','#ffb3d1','#ffd36e'];
+const rnd = (a,b) => a + Math.random()*(b-a);
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const heartSVG = c => px(HEART, heartPal(c));
+const $ = id => document.getElementById(id);
+
+/* ================= Setup visuals ================= */
+// Bunny with sparkles
+$('bunnyWrap').innerHTML =
+  `<div id="bunny">${px(BUNNY,bunnyPal)}</div>` +
+  [[-14,10,'#b79cf5'],[92,0,'#ff8fb8'],[96,60,'#ffd36e'],[-10,70,'#ff8fb8']].map(([l,t,c],i)=>
+    `<div class="sp" style="left:${l}%;top:${t}%;width:20px;animation-delay:${i*.4}s">${px(SPARK,sparkPal(c))}</div>`).join('');
+
+// Floating background decorations
+for (let i = 0; i < 18; i++){
+  const d = document.createElement('div');
+  d.className = 'deco';
+  const c = pick(COLORS), s = rnd(14,30);
+  d.style.cssText = `left:${rnd(0,98)}%;width:${s}px;animation-duration:${rnd(12,26)}s;animation-delay:${-rnd(0,26)}s`;
+  d.innerHTML = Math.random() < .55 ? heartSVG(c) : px(SPARK, sparkPal(c));
+  $('bg').appendChild(d);
+}
+$('seal').innerHTML = heartSVG('#ff4d88');
+
+// Fade sections in as they scroll into view
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold:.2});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+const scrollTo = id => $(id).scrollIntoView({behavior:'smooth', block:'center'});
+
+// Small sparkle burst at a point (used for hearts and the envelope)
+function burst(x, y, n = 8){
+  for (let i = 0; i < n; i++){
+    const b = document.createElement('div'), a = (i/n)*Math.PI*2, d = rnd(40,80);
+    b.className = 'burst';
+    b.style.cssText = `left:${x-9}px;top:${y-9}px;width:18px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px`;
+    b.innerHTML = px(SPARK, sparkPal(pick(COLORS)));
+    document.body.appendChild(b);
+    b.addEventListener('animationend', () => b.remove());
+  }
+}
+
+/* ================= 1. Landing ================= */
+$('startBtn').onclick = () => scrollTo('game1');
+
+/* ================= 2. Heart collection game ================= */
+const LETTERS = ['ر','ا','ف','ا','ن'];
+let revealed = 0;
+for (let i = 0; i < 5; i++){
+  const h = document.createElement('button');
+  h.className = 'heart';
+  h.setAttribute('aria-label','heart');
+  h.innerHTML = heartSVG(COLORS[i % 2 ? 1 : 0]);
+  h.onclick = () => {
+    if (revealed >= 5) return;
+    const r = h.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2);
+    h.classList.add('gone');
+    // Letters always appear in the fixed order ر ا ف ا ن
+    const slot = $('slots').children[revealed];
+    slot.textContent = LETTERS[revealed];
+    slot.classList.add('filled');
+    revealed++;
+    $('fill').style.width = (revealed * 20) + '%';
+    $('count').textContent = revealed + ' / 5';
+    if (revealed === 5) finishNameGame();
+  };
+  $('hearts').appendChild(h);
+  const s = document.createElement('div');
+  s.className = 'slot';
+  $('slots').appendChild(s);
+}
+function finishNameGame(){
+  setTimeout(() => {
+    $('slots').style.display = 'none';
+    $('fullName').classList.add('show');
+    const r = $('fullName').getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2, 14);
+  }, 900);
+  setTimeout(() => scrollTo('drama'), 3200);
+}
+
+/* ================= 3. Korean drama question ================= */
+let dramaAnswer = '';   // kept in memory while the page is open
+$('dramaIcon').innerHTML = `<div style="width:30px">${heartSVG('#ff5c93')}</div>`;
+$('dramaForm').onsubmit = e => {
+  e.preventDefault();
+  const v = $('dramaInput').value.trim();
+  if (!v){
+    $('dramaInput').classList.remove('shake'); void $('dramaInput').offsetWidth;
+    $('dramaInput').classList.add('shake');
+    return;
+  }
+  dramaAnswer = v;
+  $('dramaForm').style.display = 'none';
+  $('dramaDone').classList.add('show');
+  setTimeout(() => scrollTo('letter'), 1800);
+};
+
+/* ================= 4. Envelope ================= */
+$('env').onclick = e => {
+  const env = $('env');
+  if (env.classList.contains('open')) return;
+  env.classList.add('open');
+  burst(e.clientX || innerWidth/2, e.clientY || innerHeight/2, 10);
+  setTimeout(() => $('choices').classList.add('show'), 1300);
+};
+
+/* ================= 5. Final buttons ================= */
+// "Reconciled" -> celebration with falling hearts
+$('yesBtn').onclick = () => {
+  $('party').classList.add('show');
+  $('noBtn').style.display = 'none';
+  let n = 0;
+  const t = setInterval(() => {
+    const f = document.createElement('div'), s = rnd(20,46);
+    f.className = 'fall';
+    f.style.cssText = `left:${rnd(0,96)}%;width:${s}px;animation-duration:${rnd(3,6)}s`;
+    f.innerHTML = heartSVG(pick(COLORS));
+    document.body.appendChild(f);
+    f.addEventListener('animationend', () => f.remove());
+    if (++n > 90) clearInterval(t);
+  }, 90);
+};
+
+// "Still upset" button runs away on hover, touch, or click
+const no = $('noBtn');
+function runAway(e){
+  if (e){ e.preventDefault(); e.stopPropagation(); }
+  if (!no.classList.contains('fixed')){
+    // First escape: keep layout spot reserved, then move the button to <body>
+    // so position:fixed is relative to the screen (not a transformed parent).
+    const r = no.getBoundingClientRect();
+    $('noSlot').style.width = r.width + 'px';
+    $('noSlot').style.height = r.height + 'px';
+    no.style.left = r.left + 'px'; no.style.top = r.top + 'px';
+    no.classList.add('fixed');
+    document.body.appendChild(no);
+    void no.offsetWidth;
+  }
+  const w = no.offsetWidth, h = no.offsetHeight;
+  const vw = document.documentElement.clientWidth, vh = innerHeight, m = 10;
+  const cx = parseFloat(no.style.left), cy = parseFloat(no.style.top);
+  let x, y, tries = 0;
+  do {  // pick a spot that is clearly far from the current one
+    x = rnd(m, Math.max(m, vw - w - m));
+    y = rnd(m + 10, Math.max(m + 10, vh - h - m));
+  } while (Math.hypot(x - cx, y - cy) < 120 && ++tries < 12);
+  no.style.left = x + 'px'; no.style.top = y + 'px';
+  no.style.transform = `rotate(${rnd(-14,14)}deg)`;
+}
+['pointerenter','pointerdown','touchstart','mousedown','click'].forEach(ev =>
+  no.addEventListener(ev, runAway, {passive:false}));
+// Also dodge when a mouse gets close, so it is truly un-clickable on desktop
+document.addEventListener('mousemove', e => {
+  if (!no.classList.contains('fixed')) return;
+  const r = no.getBoundingClientRect();
+  if (Math.hypot(e.clientX - (r.left + r.width/2), e.clientY - (r.top + r.height/2)) < 70) runAway();
+});
+</script>
+</body>
+</html>
