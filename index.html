@@ -146,6 +146,17 @@ h2{font-weight:900;font-size:clamp(26px,7vw,38px);margin:0 0 26px}
 .burst{position:fixed;z-index:80;pointer-events:none;animation:burst .7s ease-out forwards}
 @keyframes burst{to{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
 
+/* typing message shown on every tap */
+#toast{
+  position:fixed;top:calc(14px + var(--safe-t));left:50%;transform:translateX(-50%) translateY(-10px);z-index:90;
+  max-width:90vw;direction:rtl;text-align:center;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s;
+  background:#fff;color:var(--ink);font-weight:700;font-size:clamp(16px,4.4vw,20px);line-height:1.6;
+  padding:10px 18px;border:4px solid var(--ink);border-radius:8px;box-shadow:0 5px 0 var(--ink);
+}
+#toast.show{opacity:1;transform:translateX(-50%)}
+#toast::after{content:'▌';color:#ff5c93;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
 </style>
 </head>
@@ -195,6 +206,8 @@ h2{font-weight:900;font-size:clamp(26px,7vw,38px);margin:0 0 26px}
     <span id="noSlot"><button class="btn lav" id="noBtn">لسا زعلانة</button></span>
   </div>
 </section>
+
+<div id="toast" aria-live="polite"></div>
 
 <div id="party"><h3>❤️💖💕💗💞</h3></div>
 
@@ -378,6 +391,24 @@ document.addEventListener('mousemove', e => {
   const r = no.getBoundingClientRect();
   if (Math.hypot(e.clientX - (r.left + r.width/2), e.clientY - (r.top + r.height/2)) < 70) runAway();
 });
+
+/* ================= Typing message on every tap ================= */
+const TOAST_MSG = 'دخلتي تاني ليه مش قولتيلي روح نام؟';
+let typeTimer, hideTimer;
+// Capture phase so it also fires on the runaway button and everything else
+document.addEventListener('pointerdown', () => {
+  clearInterval(typeTimer); clearTimeout(hideTimer);
+  const t = $('toast'); let i = 0;
+  t.textContent = '';
+  t.classList.add('show');
+  typeTimer = setInterval(() => {
+    t.textContent = TOAST_MSG.slice(0, ++i);
+    if (i >= TOAST_MSG.length){
+      clearInterval(typeTimer);
+      hideTimer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+  }, 55);
+}, true);
 </script>
 </body>
 </html>
